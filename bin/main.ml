@@ -7,7 +7,7 @@ let () =
   let file = fname "two" "input" in
   let ic = open_in file in
 
-  let answer = Aoc.Daytwo.part_one ic in
+  let answer = Aoc.Daytwo.part_two ic in
 
   printf "Answer: %d\n" answer;
 
