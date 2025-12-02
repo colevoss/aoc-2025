@@ -1,3 +1,6 @@
+let read_all_lines chan =
+  In_channel.input_all chan
+
 let read_lines chan =
   try Some (input_line chan, chan)
   with End_of_file -> None
