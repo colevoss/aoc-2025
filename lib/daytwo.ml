@@ -1,3 +1,6 @@
+(*
+  Splits range string into pair of ints (hi, lo)
+*)
 let get_part_ids range =
   let parts = String.split_on_char '-' range in
   (
@@ -34,31 +37,37 @@ let process_input input validator =
   |> Seq.fold_left (fun total i -> total + i) 0
 
 
+(*
+  Checks if a given part is what repeats to compose the entire string s
+*)
 let rec does_part_repeat_in_string part s =
   let part_len = String.length part in
   let str_len = String.length s in
-  let too_long = part_len > str_len in
-  let cant_repeat = str_len mod part_len != 0 in
 
-  (* Printf.printf "part: %s, s: %s\n" part s; *)
+  (* cannot repeat if part is longer than string *)
+  let too_long = part_len > str_len in
+  (* cannot repeat completely if it s length is not a multiple of part length *)
+  let cant_repeat = str_len mod part_len != 0 in
 
   if too_long || cant_repeat then
     false
+
   else
     let head = String.sub s 0 part_len in
-    (* Printf.printf "hd: %s\n" head; *)
     if str_len == part_len then
       String.equal part head
     else
       let tail = String.sub s part_len (str_len - part_len) in
-
-      (* Printf.printf "tl: %s\n" tail; *)
 
       if not (String.equal part head) then
         false
       else
         does_part_repeat_in_string part tail
 
+(*
+  Chunks the string by part size and determines if that chunk is what makes up the
+  entire id. If it doesn't, increase the part size and try again.
+*)
 let rec cycle_parts id part_size max_part_size =
   let str_len = String.length id in
   let head = String.sub id 0 part_size in
@@ -79,7 +88,6 @@ let part_two_validator id_int =
   cycle_parts id 1 max_chunk_len
 
 let test_does_part_repeat id =
-  (* let does_repeat = does_part_repeat_in_string part str in *)
   let does_repeat = part_two_validator id in
   Printf.printf "%d valid: %b\n" id does_repeat
 
